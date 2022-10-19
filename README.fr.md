@@ -35,7 +35,7 @@ Cherchez ce que vous voulez dans un objet, méthode ou variable python, directem
 <!-- ABOUT THE PROJECT -->
 ## Introduction
 
-[Search'In Screen Shot][product-screenshot]
+<!-- [Screen Shot][product-screenshot] -->
 
 Avez vous déjà passé des heures à chercher le nom d'une méthode ou d'une propriété d'une librairie tierce ? Vous êtes sûr que cette méthode/propriété doit exister, mais impossible de la trouver, ni dans la documentation, ni dans les exemples, ni sur StackOverflow... Vous finissez par vous résigner à scroller dans le code source de la librairie... Tellement frustrant !
 

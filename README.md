@@ -34,7 +34,7 @@
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
-[Product Name Screen Shot][product-screenshot]
+<!-- [Screen Shot][product-screenshot] -->
 
 Have you ever spent hours looking for the name of a method or property of a third party library? You are sure that this method/property must exist, but you cannot find it, neither in the documentation, nor in the examples, nor on StackOverflow... You end up scrolling through the source code of the library... So frustrating!
 
