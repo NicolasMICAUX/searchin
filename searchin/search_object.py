@@ -178,7 +178,7 @@ def _search_object(obj, query: str, max_depth: int = 10,
                                   ])
 
 
-def search_in(obj, query: str, max_depth: int = 10, max_iterable_length: int = 100,
+def searchin(obj, query: str, max_depth: int = 10, max_iterable_length: int = 100,
                   get_raw_result: bool = False) -> Union[List[SearchResult], None]:
     """
     Search an object for a given search term.
