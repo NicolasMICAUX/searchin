@@ -178,13 +178,15 @@ def _search_object(obj, query: str, max_depth: int = 10,
                                   ])
 
 
-def searchin(obj, query: str, max_depth: int = 10, max_iterable_length: int = 100,
-                  get_raw_result: bool = False) -> Union[List[SearchResult], None]:
+def searchin(obj, query: str, max_depth: int = 3, top_k_results: int = 10,
+             max_iterable_length: int = 100,
+             get_raw_result: bool = False) -> Union[List[SearchResult], None]:
     """
     Search an object for a given search term.
     :param obj: The object to search in.
     :param query: What to search for.
     :param max_depth: The maximum depth of the recursive search.
+    :param top_k_results: The maximum number of results to return.
     :param max_iterable_length: The maximum length of an iterable to search in.
     :param get_raw_result: If True, return the raw results (of type SearchResult), else just print them.
     :return: A list of search results.
