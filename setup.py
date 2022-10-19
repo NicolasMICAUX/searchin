@@ -4,7 +4,7 @@ from distutils.core import setup
 setup(
     name='searchin',
     packages=['searchin'],
-    version='0.1.1',
+    version='0.1.2',
     description='Search anything in a live python object, method or variable!',
     author='Nicolas Micaux',  # Type in your name
     # author_email='your.email@domain.com',  # Type in your E-Mail
