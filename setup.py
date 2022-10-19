@@ -4,12 +4,12 @@ from distutils.core import setup
 setup(
     name='searchin',
     packages=['searchin'],
-    version='0.1.3',
+    version='0.1.4',
     description='Search anything in a live python object, method or variable!',
     author='Nicolas Micaux',  # Type in your name
     # author_email='your.email@domain.com',  # Type in your E-Mail
     url='https://github.com/NicolasMICAUX/searchin',
-    download_url='https://github.com/NicolasMICAUX/searchin/archive/refs/tags/v0.1.3.tar.gz',  # I explain this later on
+    download_url='https://github.com/NicolasMICAUX/searchin/archive/refs/tags/v0.1.4.tar.gz',  # I explain this later on
     keywords=['SEARCH', 'DEBUG'],
     install_requires=[],  # None
     classifiers=[
