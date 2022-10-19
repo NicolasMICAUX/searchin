@@ -5,7 +5,7 @@ setup(
     name='searchin',
     packages=['searchin'],
     version='0.1',
-    description='Search anything in a live python object/method/variable!',
+    description='Search anything in a live python object, method or variable!',
     author='Nicolas Micaux',  # Type in your name
     author_email='your.email@domain.com',  # Type in your E-Mail
     url='Search anything in a live python object/method/variable!',
