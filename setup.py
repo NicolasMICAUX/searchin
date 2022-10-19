@@ -4,7 +4,7 @@ from distutils.core import setup
 setup(
     name='searchin',
     packages=['searchin'],
-    version='0.1.7',
+    version='0.1.8',
     description='Search anything in a live python object, method or variable',
     author='Nicolas Micaux',
 
