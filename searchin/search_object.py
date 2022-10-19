@@ -46,9 +46,12 @@ class Path:
         return self.names_path
 
 
-def trunc_str(s: str, max_len: int = 50) -> str:
+def trunc_str(s: str, max_len: int = 50, trunc_at_end: bool = True) -> str:
     """Truncate a string to a maximum length."""
-    return s[:max_len] + '...' if len(s) > max_len else s
+    if trunc_at_end:
+        return s[:max_len] + '[...] ' if len(s) > max_len else s
+    else:
+        return ' [...]' + s[-max_len:] if len(s) > max_len else s
 
 
 def clean_str(s: str) -> str:
@@ -85,7 +88,7 @@ class SearchMatch:
         # Show the beginning of the string, a bit around the match, and the end of the string.
         begin = clean_str(trunc_str(s[:max(idx - 20, 0)]))
         match = clean_str(s[idx - 20:idx + len(search_term) + 20])
-        end = clean_str(trunc_str(s[idx + len(search_term) + 20:]))
+        end = clean_str(trunc_str(s[idx + len(search_term) + 20:], trunc_at_end=False))
         self._repr = f'{begin}{match}{end}'
         return self
 
