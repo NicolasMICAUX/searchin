@@ -5,7 +5,7 @@ setup(
     name='searchin',
     packages=['searchin'],
     version='0.1.7',
-    description='Search anything in a live python object, method or variable!',
+    description='Search anything in a live python object, method or variable',
     author='Nicolas Micaux',
 
     url='https://github.com/NicolasMICAUX/searchin',
@@ -13,7 +13,7 @@ setup(
 
     install_requires=[],  # None
 
-    keywords=['SEARCH', 'DEBUG'],
+    keywords=['search', 'debug', 'inspect'],
     classifiers=[
         'Development Status :: 3 - Alpha',
         # Chose either "3 - Alpha", "4 - Beta" or "5 - Production/Stable" as the current state of your package
