@@ -34,131 +34,79 @@
 </div>
 
 
-
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
-
-
-
 <!-- ABOUT THE PROJECT -->
 ## About The Project
 
 [Product Name Screen Shot][product-screenshot]
 
-Ever searched a method or a property in 
+Have you ever spent hours looking for the name of a method or property of a third party library? You are sure that this method/property must exist, but you cannot find it, neither in the documentation, nor in the examples, nor on StackOverflow... You end up scrolling through the source code of the library... So frustrating!
 
-Here's why:
-* Your time should be focused on creating something amazing. A project that solves a problem and helps others
-* You shouldn't be doing the same tasks over and over like creating a README from scratch
-* You should implement DRY principles to the rest of your life :smile:
-
-Of course, no one template will serve all projects since your needs may be different. So I'll be adding more in the near future. You may also suggest changes by forking this repo and creating a pull request or opening an issue. Thanks to all the people have contributed to expanding this template!
-
-Use the `BLANK_README.md` to get started.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-### Built With
-
-This section should list any major frameworks/libraries used to bootstrap your project. Leave any add-ons/plugins for the acknowledgements section. Here are a few examples.
-
-* [![Next][Next.js]][Next-url]
-* [![React][React.js]][React-url]
-* [![Vue][Vue.js]][Vue-url]
-* [![Angular][Angular.io]][Angular-url]
-* [![Svelte][Svelte.dev]][Svelte-url]
-* [![Laravel][Laravel.com]][Laravel-url]
-* [![Bootstrap][Bootstrap.com]][Bootstrap-url]
-* [![JQuery][JQuery.com]][JQuery-url]
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
+Search'In is a tool that allows you to search in python objects as if you were on Google, just by adding a line in the middle of your code !
 
 <!-- GETTING STARTED -->
 ## Getting Started
+Using Search'In requires no effort at all!
 
-This is an example of how you may give instructions on setting up your project locally.
-To get a local copy up and running follow these simple example steps.
+Install Search'In with pip :
+```sh
+pip install searchin
+```
 
-### Prerequisites
+Import Search'In in your code, by adding this line :
+```python
+from searchin import searchin
+```
 
-This is an example of how to list things you need to use the software and how to install them.
-* npm
-  ```sh
-  npm install npm@latest -g
-  ```
-
-### Installation
-
-_Below is an example of how you can instruct your audience on installing and setting up your app. This template doesn't rely on any external dependencies or services._
-
-1. Get a free API Key at [https://example.com](https://example.com)
-2. Clone the repo
-   ```sh
-   git clone https://github.com/your_username_/Project-Name.git
-   ```
-3. Install NPM packages
-   ```sh
-   npm install
-   ```
-4. Enter your API in `config.js`
-   ```js
-   const API_KEY = 'ENTER YOUR API';
-   ```
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
+To search for `"name"` in a `Human` class for example, just add this line :
+```python
+searchin(Human, "name")
+```
 
 <!-- USAGE EXAMPLES -->
-## Usage
+## Other examples
+You can search for any string in any python "entity" : variable, method, object, class, module, etc.
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+**Search for `"5"` in a `tuple`**
+```python
+searchin((1, 2, 3, 4, 5, 6, 7, 8, 9), "5")
+# >>> "5" found in root.4 : 5
+```
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+**Search for `"mean"` in the method `torch.nn.functional.cross_entropy`**
+```python
+searchin(torch.nn.functional.cross_entropy, "mean")
+# >>> "mean" found in root. : def cross_entropy( [...] reduction: str = "mean", [...], label_smoothing)
+```
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
+**Search for `"grad"` in a `torch.nn.Module`**
+```python
+model = torch.nn.Linear(10, 10)
+searchin(model, "grad")
+# >>> "grad" found in root.bias
+# >>> "grad" found in root.requires_grad_
+# >>> "grad" found in root.weight
+# >>> "grad" found in root.zero_grad
+```
 
-
-
-<!-- ROADMAP -->
-## Roadmap
-
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
-
-See the [open issues](https://github.com/NicolasMICAUX/searchin/issues) for a full list of proposed features (and known issues).
+## Advanced features
+```python
+def searchin(obj,
+             query: str,
+             max_depth: int = 3,
+             top_k_results: int = 10,
+             max_iterable_length: int = 100,
+             get_raw_result: bool = False) -> Union[List[SearchResult], None]:
+    """
+    Search an object for a given search term.
+    :param obj: The object to search in.
+    :param query: What to search for.
+    :param max_depth: The maximum depth of the recursive search.
+    :param top_k_results: The maximum number of results to return.
+    :param max_iterable_length: The maximum length of an iterable to search in.
+    :param get_raw_result: If True, return the raw results (of type SearchResult), else just print them.
+    :return: A list of search results.
+    """
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
@@ -166,58 +114,41 @@ See the [open issues](https://github.com/NicolasMICAUX/searchin/issues) for a fu
 
 <!-- CONTRIBUTING -->
 ## Contributing
+_(Section in english)_  
+I want to add a lot of functionnalities to this project, but I don't have much time to work on it. Contributions are welcome!  
 
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
+<!-- ROADMAP-->
+### Roadmap/todo
+<!-- table with columns : task, importance, difficulty, status, description -->
+| Task                     | Importance | Difficulty | Contributor on it | Description                                                                                                                                     |
+|:-------------------------|------------|------------|-------------------|:------------------------------------------------------------------------------------------------------------------------------------------------|
+| Fuzzy match              | 5/5        | 2/5        | NOBODY            | _e.g._ : `batch_size` should match when searching `batchsize`.                                                                                  |
+| Underline the match      | 4/5        | 1/5        | NOBODY            | _e.g._ : the printed result should be formatted like this : _def cross_entropy( [...] reduction: str = "<u>mean</u>", [...], label_smoothing)_  |
+| Write some tests         | 4/5        | 2/5        | NOBODY            | Write some tests to ensure that the code is working properly.                                                                                   |
+| Find a better algorithm  | 3/5        | 4/5        | NOBODY            | The current algorithm is a BFS (Breadth First Search). Maybe there is a better algorithm to use.                                                |
+| `Searchin...` animation  | 3/5        | 1/5        | NOBODY            | Add a cool animation when searching takes a bit of time.                                                                                        |
+| Profile code             | 2/5        | 1/5        | NOBODY            | Profile the code to see if we can speed it up a little.                                                                                         |
+| Add a CLI                | 1/5        | 2/5        | NOBODY            | Think about the design of a CLI (Command Line Interface) to use Search'In from the terminal.                                                    |
+_For every todo, just click on the link to find the discussion where I describe how I would do it._  
+See the [open issues](https://github.com/NicolasMICAUX/searchin/issues) for a full list of proposed features (and known issues).
 
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+<p align="right">(<a href="#readme-top">back to top</a>)</p>
+
+### How to contribute
+Contributing is an awesome way to learn, inspire, and help others. Any contributions you make are **greatly appreciated**, even if it's just about styling and best practices.
+
+If you have a suggestion that would make this project better, please fork the repo and create a pull request.  
 Don't forget to give the project a star! Thanks again!
 
 1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+2. Create your Feature Branch (`git checkout -b feature/YourAmazingFeature`)
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- CONTACT -->
-## Contact
-
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
-
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
+## Authors
+This library was created by [Nicolas MICAUX](https://github.com/NicolasMICAUX).
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
@@ -230,25 +161,10 @@ Use this space to list resources you find helpful and would like to give credit 
 [stars-url]: https://github.com/NicolasMICAUX/searchin/stargazers
 [issues-shield]: https://img.shields.io/github/issues/NicolasMICAUX/searchin.svg?style=for-the-badge
 [issues-url]: https://github.com/NicolasMICAUX/searchin/issues
-[license-shield]: https://img.shields.io/github/license/NicolasMICAUX/searchin.svg?style=for-the-badge
 
-[license-url]: https://github.com/NicolasMICAUX/searchin/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
+[//]: # ([license-shield]: https://img.shields.io/github/license/NicolasMICAUX/searchin.svg?style=for-the-badge)
+[//]: # ([license-url]: https://github.com/NicolasMICAUX/searchin/blob/master/LICENSE.txt)
+[//]: # ([linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555)
+[//]: # ([linkedin-url]: https://linkedin.com/in/othneildrew)
 [product-screenshot]: images/screenshot.png
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
-[Vue-url]: https://vuejs.org/
-[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
-[Angular-url]: https://angular.io/
-[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
-[Svelte-url]: https://svelte.dev/
-[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
-[Laravel-url]: https://laravel.com
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
-[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
+
