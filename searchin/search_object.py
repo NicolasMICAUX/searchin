@@ -51,6 +51,11 @@ def trunc_str(s: str, max_len: int = 50) -> str:
     return s[:max_len] + '...' if len(s) > max_len else s
 
 
+def clean_str(s: str) -> str:
+    """Clean a string."""
+    return s.replace('\r', '').replace('\t', '').replace('\n', ' ').strip()
+
+
 class SearchMatch:
     """A search match, which is used to represent the position of the found query."""
 
@@ -77,10 +82,10 @@ class SearchMatch:
         :param search_term: The search term.
         """
         # Clean the string: remove newlines and tabs, strip it.
-        # Show the beginning of the string, the match, and the end of the string.
-        begin = trunc_str(s[:idx].replace('\n', ' ').replace('\t', ' ').strip())
-        match = trunc_str(s[idx:idx + len(search_term)].replace('\n', ' ').replace('\t', ' ').strip())
-        end = trunc_str(s[idx + len(search_term):].replace('\n', ' ').replace('\t', ' ').strip())
+        # Show the beginning of the string, a bit around the match, and the end of the string.
+        begin = clean_str(trunc_str(s[:max(idx - 20, 0)]))
+        match = clean_str(s[idx - 20:idx + len(search_term) + 20])
+        end = clean_str(trunc_str(s[idx + len(search_term) + 20:]))
         self._repr = f'{begin}{match}{end}'
         return self
 
@@ -130,23 +135,21 @@ def is_sized_iterable(item: Iterable) -> bool:
     return hasattr(item, '__len__') or isinstance(item, Sized)
 
 
-def _search_object(obj, query: str, max_depth: int = 10,
-                   max_iterable_length: int = 100) -> Union[List[SearchResult], None]:
+def _search_object(obj, query, max_depth, top_k_results, max_iterable_length) -> Union[List[SearchResult], None]:
     """
     Search an object for a given search term.
-    :param obj: The object to search in.
-    :param query: What to search for.
-    :param max_depth: The maximum depth of the recursive search.
-    :param max_iterable_length: The maximum length of an iterable to search in.
-    :return: A list of search results.
     """
     queue: List[Path] = [Path().from_start_node(Node('root', obj, 0))]
+    k = 0
     while queue:
         path = queue.pop(0)
         item = path.last_node.obj
         depth = path.last_node.depth
         if (sr := is_in(item, query)) is not False:
             yield SearchResult(query, path, sr)
+            k += 1
+            if k == top_k_results:
+                return
         if depth < max_depth:
             if not isbuiltin(item):
                 if doc := getdoc(item) is not None:
@@ -195,7 +198,7 @@ def searchin(obj, query: str, max_depth: int = 3, top_k_results: int = 10,
     assert isinstance(query, str), f"Query must be a string, not {type(query)}"
 
     if get_raw_result:
-        return _search_object(obj, query, max_depth, max_iterable_length)
+        return _search_object(obj, query, max_depth, top_k_results, max_iterable_length)
     else:  # Print the results
-        for result in _search_object(obj, query, max_depth, max_iterable_length):
+        for result in _search_object(obj, query, max_depth, top_k_results, max_iterable_length):
             print(result)
