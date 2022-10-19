@@ -2,6 +2,9 @@
 [![Contributors][contributors-shield]][contributors-url]<!--[![Forks][forks-shield]][forks-url]-->
 [![Stargazers][stars-shield]][stars-url]
 [![Issues][issues-shield]][issues-url]<!--[![MIT License][license-shield]][license-url]--><!--[![LinkedIn][linkedin-shield]][linkedin-url]-->
+[![PyPi version][pypi-shield]][pypi-url]
+[![Python 2][python2-shield]][python-url]
+[![Python 3][python3-shield]][python-url]
 
 
 <!-- PROJECT LOGO -->
@@ -150,19 +153,24 @@ Don't forget to give the project a star! Thanks again!
 Cette librairie a été crée par [Nicolas MICAUX](https://github.com/NicolasMICAUX).
 
 
+
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
 [contributors-shield]: https://img.shields.io/github/contributors/NicolasMICAUX/searchin.svg?style=for-the-badge
 [contributors-url]: https://github.com/NicolasMICAUX/searchin/graphs/contributors
-[forks-shield]: https://img.shields.io/github/forks/NicolasMICAUX/searchin.svg?style=for-the-badge
-[forks-url]: https://github.com/NicolasMICAUX/searchin/network/members
 [stars-shield]: https://img.shields.io/github/stars/NicolasMICAUX/searchin.svg?style=for-the-badge
 [stars-url]: https://github.com/NicolasMICAUX/searchin/stargazers
 [issues-shield]: https://img.shields.io/github/issues/NicolasMICAUX/searchin.svg?style=for-the-badge
 [issues-url]: https://github.com/NicolasMICAUX/searchin/issues
+[pypi-shield]: https://img.shields.io/pypi/v/searchin.svg?style=for-the-badge
+[pypi-url]: https://pypi.org/project/searchin/
+[python2-shield]: https://img.shields.io/badge/python-2.7+-blue.svg?style=for-the-badge
+[python3-shield]: https://img.shields.io/badge/python-3.5+-blue.svg?style=for-the-badge
+[python-url]: https://www.python.org/downloads/
 
 [//]: # ([license-shield]: https://img.shields.io/github/license/NicolasMICAUX/searchin.svg?style=for-the-badge)
 [//]: # ([license-url]: https://github.com/NicolasMICAUX/searchin/blob/master/LICENSE.txt)
 [//]: # ([linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555)
 [//]: # ([linkedin-url]: https://linkedin.com/in/othneildrew)
 [product-screenshot]: images/screenshot.png
+
