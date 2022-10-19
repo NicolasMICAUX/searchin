@@ -1,5 +1,5 @@
 from unittest import TestCase
-from searchin.search_object import search_object
+from searchin import searchin
 
 
 class MyClass:
@@ -17,6 +17,6 @@ class MyClass:
 
 class Test(TestCase):
     def test_search_object(self):
-        for result in search_object(MyClass(), 'gamma'):
+        for result in searchin(MyClass(), 'gamma'):
             print(result)
             self.assertEqual(result.query, 'gamma')
