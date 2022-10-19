@@ -9,7 +9,7 @@ setup(
     author='Nicolas Micaux',  # Type in your name
     author_email='your.email@domain.com',  # Type in your E-Mail
     url='Search anything in a live python object/method/variable!',
-    download_url='https://github.com/user/reponame/archive/v_01.tar.gz',  # I explain this later on
+    download_url='https://github.com/NicolasMICAUX/searchin/archive/refs/tags/v0.1.tar.gz',  # I explain this later on
     keywords=['SEARCH', 'DEBUG'],
     install_requires=[],  # None
     classifiers=[
