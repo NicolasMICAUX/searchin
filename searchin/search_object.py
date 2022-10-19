@@ -1,7 +1,11 @@
 """Search a query in an object.
 Useful reference: https://docs.python.org/3/library/inspect.html
 """
-from collections.abc import Iterable
+try:
+    from collections.abc import Iterable  # Python 3+
+except ImportError:
+    from collections import Iterable  # Python 2
+
 from inspect import getmembers, isbuiltin, getdoc, getcomments, getfile, getsource, signature
 from typing import Union, List, Sized
 import numbers
@@ -89,7 +93,7 @@ class SearchMatch:
         begin = clean_str(trunc_str(s[:max(idx - 20, 0)]))
         match = clean_str(s[idx - 20:idx + len(search_term) + 20])
         end = clean_str(trunc_str(s[idx + len(search_term) + 20:], trunc_at_end=False))
-        self._repr = f'{begin} {match} {end}'
+        self._repr = '{} {} {}'.format(begin, match, end)
         return self
 
     def from_obj(self, str_obj, idx, search_term):
@@ -106,7 +110,7 @@ class SearchResult:
         self.search_match = search_match
 
     def __str__(self):
-        return f""""\"{self.query}\" found in {self.path} : {self.search_match}"""
+        return '"{}" found in {} : {}'.format(self.query, self.path, self.search_match)
 
 
 def is_in(obj, search_term: str) -> Union[bool, SearchMatch]:
@@ -142,22 +146,25 @@ def _search_object(obj, query, max_depth, top_k_results, max_iterable_length) ->
     """
     Search an object for a given search term.
     """
-    queue: List[Path] = [Path().from_start_node(Node('root', obj, 0))]
+    queue = [Path().from_start_node(Node('root', obj, 0))]  # type: List[Path]
     k = 0
     while queue:
         path = queue.pop(0)
         item = path.last_node.obj
         depth = path.last_node.depth
-        if (sr := is_in(item, query)) is not False:
+        sr = is_in(item, query)
+        if sr is not False:
             yield SearchResult(query, path, sr)
             k += 1
             if k == top_k_results:
                 return
         if depth < max_depth:
             if not isbuiltin(item):
-                if doc := getdoc(item) is not None:
+                doc = getdoc(item)
+                if doc is not None:
                     queue.append(path.add_node(Node('', doc, depth + 1)))
-                if comments := getcomments(item) is not None:
+                comments = getcomments(item)
+                if comments is not None:
                     queue.append(path.add_node(Node('', comments, depth + 1)))
                 try:
                     file = getfile(item)
@@ -198,7 +205,7 @@ def searchin(obj, query: str, max_depth: int = 3, top_k_results: int = 10,
     :return: A list of search results.
     """
     # Assert that `query` is a string
-    assert isinstance(query, str), f"Query must be a string, not {type(query)}"
+    assert isinstance(query, str), "Query must be a string, not a %s" % type(query)
 
     if get_raw_result:
         return _search_object(obj, query, max_depth, top_k_results, max_iterable_length)
