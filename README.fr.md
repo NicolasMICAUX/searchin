@@ -15,53 +15,22 @@
   <h3 align="center">Search'In</h3>
 
   <p align="center">
-    Search anything in a live python object, method or variable!
+Cherchez ce que vous voulez dans un objet, méthode ou variable python, directement dans votre code !
     <br />
 <!--
-    <a href="https://github.com/NicolasMICAUX/searchin"><strong>Explore the docs »</strong></a>
+    <a href="https://github.com/NicolasMICAUX/searchin"><strong>Explorer la documentation »</strong></a>
 -->
     <br />
     <br />
-    <a href="https://github.com/NicolasMICAUX/searchin">View Demo</a>
+    <a href="https://github.com/NicolasMICAUX/searchin">Voir la démo</a>
     ·
     <a href="https://github.com/NicolasMICAUX/searchin/issues">Report Bug</a>
-    ·
-    <a href="https://github.com/NicolasMICAUX/searchin/issues">Request Feature</a>
   </p>
 </div>
 
 
-
-<!-- TABLE OF CONTENTS -->
-<details>
-  <summary>Table of Contents</summary>
-  <ol>
-    <li>
-      <a href="#about-the-project">About The Project</a>
-      <ul>
-        <li><a href="#built-with">Built With</a></li>
-      </ul>
-    </li>
-    <li>
-      <a href="#getting-started">Getting Started</a>
-      <ul>
-        <li><a href="#prerequisites">Prerequisites</a></li>
-        <li><a href="#installation">Installation</a></li>
-      </ul>
-    </li>
-    <li><a href="#usage">Usage</a></li>
-    <li><a href="#roadmap">Roadmap</a></li>
-    <li><a href="#contributing">Contributing</a></li>
-    <li><a href="#license">License</a></li>
-    <li><a href="#contact">Contact</a></li>
-    <li><a href="#acknowledgments">Acknowledgments</a></li>
-  </ol>
-</details>
-
-
-
 <!-- ABOUT THE PROJECT -->
-## About The Project
+## Introduction
 
 [Search'In Screen Shot][product-screenshot]
 
@@ -72,110 +41,113 @@ Search'In est un outil qui vous permet de rechercher dans des objets python comm
 <p align="right">(<a href="#readme-top">retour en haut</a>)</p>
 
 <!-- GETTING STARTED -->
-## Getting Started
+## Pour commencer
 Utiliser Search'In ne recquiert aucun effort.
 
 Installer Search'In avec pip :
-  ```sh
-  pip install searchin
-  ```
+```sh
+pip install searchin
+```
 
 Importer Search'In dans votre code, en ajoutant cette ligne :
 ```python
 from searchin import searchin
 ```
 
-Pour chercher `grad` dans un dans un objet, il suffit d'ajouter cette ligne :
+Pour chercher `"name"` dans une classe `Human` par exemple, il suffit d'ajouter cette ligne :
 ```python
-
-
+searchin(Human, "name")
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
 
 
 <!-- USAGE EXAMPLES -->
-## Usage
+## D'autres exemples
+Vous pouvez chercher n'importe quelle chaîne de caractère dans n'importe quel "entité" python : variable, méthode, objet, classe, module, etc.
 
-Use this space to show useful examples of how a project can be used. Additional screenshots, code examples and demos work well in this space. You may also link to more resources.
+**Chercher `"5"` dans un `tuple`**
+```python
+searchin((1, 2, 3, 4, 5, 6, 7, 8, 9), "5")
+# >>> "5" found in root.4 : 5
+```
 
-_For more examples, please refer to the [Documentation](https://example.com)_
+**Chercher `"mean"` dans la méthode `torch.nn.functional.cross_entropy`**
+```python
+searchin(torch.nn.functional.cross_entropy, "mean")
+# >>> "mean" found in root. : def cross_entropy( [...] reduction: str = "mean", [...], label_smoothing)
+```
+
+**Chercher `"grad"` dans un `torch.nn.Module`**
+```python
+model = torch.nn.Linear(10, 10)
+searchin(model, "grad")
+# >>> "grad" found in root.bias
+# >>> "grad" found in root.requires_grad_
+# >>> "grad" found in root.weight
+# >>> "grad" found in root.zero_grad
+```
+
+## Fonctionnalités avancées
+```python
+def searchin(obj,
+             query: str,
+             max_depth: int = 3,
+             top_k_results: int = 10,
+             max_iterable_length: int = 100,
+             get_raw_result: bool = False) -> Union[List[SearchResult], None]:
+    """
+    Search an object for a given search term.
+    :param obj: The object to search in.
+    :param query: What to search for.
+    :param max_depth: The maximum depth of the recursive search.
+    :param top_k_results: The maximum number of results to return.
+    :param max_iterable_length: The maximum length of an iterable to search in.
+    :param get_raw_result: If True, return the raw results (of type SearchResult), else just print them.
+    :return: A list of search results.
+    """
+```
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+<!-- CONTRIBUTING -->
+## Contributing
+_(Section in english)_  
+I want to add a lot of functionnalities to this project, but I don't have much time to work on it. Contributions are welcome!  
 
-
-<!-- ROADMAP -->
-## Roadmap
-
-- [x] Add Changelog
-- [x] Add back to top links
-- [ ] Add Additional Templates w/ Examples
-- [ ] Add "components" document to easily copy & paste sections of the readme
-- [ ] Multi-language Support
-    - [ ] Chinese
-    - [ ] Spanish
-
+<!-- ROADMAP-->
+### Roadmap/todo
+<!-- table with columns : task, importance, difficulty, status, description -->
+| Task                     | Importance | Difficulty | Contributor on it | Description                                                                                                                                     |
+|:-------------------------|------------|------------|-------------------|:------------------------------------------------------------------------------------------------------------------------------------------------|
+| Fuzzy match              | 5/5        | 2/5        | NOBODY            | _e.g._ : `batch_size` should match when searching `batchsize`.                                                                                  |
+| Underline the match      | 4/5        | 1/5        | NOBODY            | _e.g._ : the printed result should be formatted like this : _def cross_entropy( [...] reduction: str = "<u>mean</u>", [...], label_smoothing)_  |
+| Write some tests         | 4/5        | 2/5        | NOBODY            | Write some tests to ensure that the code is working properly.                                                                                   |
+| Find a better algorithm  | 3/5        | 4/5        | NOBODY            | The current algorithm is a BFS (Breadth First Search). Maybe there is a better algorithm to use.                                                |
+| `Searchin...` animation  | 3/5        | 1/5        | NOBODY            | Add a cool animation when searching takes a bit of time.                                                                                        |
+| Profile code             | 2/5        | 1/5        | NOBODY            | Profile the code to see if we can speed it up a little.                                                                                         |
+| Add a CLI                | 1/5        | 2/5        | NOBODY            | Think about the design of a CLI (Command Line Interface) to use Search'In from the terminal.                                                    |
+_For every todo, just click on the link to find the discussion where I describe how I would do it._  
 See the [open issues](https://github.com/NicolasMICAUX/searchin/issues) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
+### How to contribute
+Contributing is an awesome way to learn, inspire, and help others. Any contributions you make are **greatly appreciated**, even if it's just about styling and best practices.
 
-
-<!-- CONTRIBUTING -->
-## Contributing
-
-Contributions are what make the open source community such an amazing place to learn, inspire, and create. Any contributions you make are **greatly appreciated**.
-
-If you have a suggestion that would make this better, please fork the repo and create a pull request. You can also simply open an issue with the tag "enhancement".
+If you have a suggestion that would make this project better, please fork the repo and create a pull request.  
 Don't forget to give the project a star! Thanks again!
 
 1. Fork the Project
-2. Create your Feature Branch (`git checkout -b feature/AmazingFeature`)
+2. Create your Feature Branch (`git checkout -b feature/YourAmazingFeature`)
 3. Commit your Changes (`git commit -m 'Add some AmazingFeature'`)
 4. Push to the Branch (`git push origin feature/AmazingFeature`)
 5. Open a Pull Request
 
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
 
-
-
-<!-- LICENSE -->
-## License
-
-Distributed under the MIT License. See `LICENSE.txt` for more information.
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- CONTACT -->
-## Contact
-
-Your Name - [@your_twitter](https://twitter.com/your_username) - email@example.com
-
-Project Link: [https://github.com/your_username/repo_name](https://github.com/your_username/repo_name)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
-
-
-<!-- ACKNOWLEDGMENTS -->
-## Acknowledgments
-
-Use this space to list resources you find helpful and would like to give credit to. I've included a few of my favorites to kick things off!
-
-* [Choose an Open Source License](https://choosealicense.com)
-* [GitHub Emoji Cheat Sheet](https://www.webpagefx.com/tools/emoji-cheat-sheet)
-* [Malven's Flexbox Cheatsheet](https://flexbox.malven.co/)
-* [Malven's Grid Cheatsheet](https://grid.malven.co/)
-* [Img Shields](https://shields.io)
-* [GitHub Pages](https://pages.github.com)
-* [Font Awesome](https://fontawesome.com)
-* [React Icons](https://react-icons.github.io/react-icons/search)
-
-<p align="right">(<a href="#readme-top">back to top</a>)</p>
-
+## Auteurs
+Cette librairie a été crée par [Nicolas MICAUX](https://github.com/NicolasMICAUX).
 
 
 <!-- MARKDOWN LINKS & IMAGES -->
@@ -188,25 +160,9 @@ Use this space to list resources you find helpful and would like to give credit 
 [stars-url]: https://github.com/NicolasMICAUX/searchin/stargazers
 [issues-shield]: https://img.shields.io/github/issues/NicolasMICAUX/searchin.svg?style=for-the-badge
 [issues-url]: https://github.com/NicolasMICAUX/searchin/issues
-[license-shield]: https://img.shields.io/github/license/NicolasMICAUX/searchin.svg?style=for-the-badge
 
-[license-url]: https://github.com/NicolasMICAUX/searchin/blob/master/LICENSE.txt
-[linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555
-[linkedin-url]: https://linkedin.com/in/othneildrew
+[//]: # ([license-shield]: https://img.shields.io/github/license/NicolasMICAUX/searchin.svg?style=for-the-badge)
+[//]: # ([license-url]: https://github.com/NicolasMICAUX/searchin/blob/master/LICENSE.txt)
+[//]: # ([linkedin-shield]: https://img.shields.io/badge/-LinkedIn-black.svg?style=for-the-badge&logo=linkedin&colorB=555)
+[//]: # ([linkedin-url]: https://linkedin.com/in/othneildrew)
 [product-screenshot]: images/screenshot.png
-[Next.js]: https://img.shields.io/badge/next.js-000000?style=for-the-badge&logo=nextdotjs&logoColor=white
-[Next-url]: https://nextjs.org/
-[React.js]: https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB
-[React-url]: https://reactjs.org/
-[Vue.js]: https://img.shields.io/badge/Vue.js-35495E?style=for-the-badge&logo=vuedotjs&logoColor=4FC08D
-[Vue-url]: https://vuejs.org/
-[Angular.io]: https://img.shields.io/badge/Angular-DD0031?style=for-the-badge&logo=angular&logoColor=white
-[Angular-url]: https://angular.io/
-[Svelte.dev]: https://img.shields.io/badge/Svelte-4A4A55?style=for-the-badge&logo=svelte&logoColor=FF3E00
-[Svelte-url]: https://svelte.dev/
-[Laravel.com]: https://img.shields.io/badge/Laravel-FF2D20?style=for-the-badge&logo=laravel&logoColor=white
-[Laravel-url]: https://laravel.com
-[Bootstrap.com]: https://img.shields.io/badge/Bootstrap-563D7C?style=for-the-badge&logo=bootstrap&logoColor=white
-[Bootstrap-url]: https://getbootstrap.com
-[JQuery.com]: https://img.shields.io/badge/jQuery-0769AD?style=for-the-badge&logo=jquery&logoColor=white
-[JQuery-url]: https://jquery.com 
