@@ -122,21 +122,21 @@ I want to add a lot of functionnalities to this project, but I don't have much t
 <!-- ROADMAP-->
 ### Roadmap/todo
 <!-- table with columns : task, importance, difficulty, status, description -->
-| Task                     | Importance | Difficulty | Contributor on it | Description                                                                                                                                     |
-|:-------------------------|------------|------------|-------------------|:------------------------------------------------------------------------------------------------------------------------------------------------|
-| Fuzzy match              | 5/5        | 2/5        | NOBODY            | _e.g._ : `batch_size` should match when searching `batchsize`.                                                                                  |
-| Underline the match      | 4/5        | 1/5        | NOBODY            | _e.g._ : the printed result should be formatted like this : _def cross_entropy( [...] reduction: str = "<u>mean</u>", [...], label_smoothing)_  |
-| Write some tests         | 4/5        | 2/5        | NOBODY            | Write some tests to ensure that the code is working properly.                                                                                   |
-| Find a better algorithm  | 3/5        | 4/5        | NOBODY            | The current algorithm is a BFS (Breadth First Search). Maybe there is a better algorithm to use.                                                |
-| `Searchin...` animation  | 3/5        | 1/5        | NOBODY            | Add a cool animation when searching takes a bit of time.                                                                                        |
-| Profile code             | 2/5        | 1/5        | NOBODY            | Profile the code to see if we can speed it up a little.                                                                                         |
-| Add a CLI                | 1/5        | 2/5        | NOBODY            | Think about the design of a CLI (Command Line Interface) to use Search'In from the terminal.                                                    |
+| Task                     | Importance | Difficulty | Contributor on it | Description                                                                                                                                    |
+|:-------------------------|------------|------------|-------------------|:-----------------------------------------------------------------------------------------------------------------------------------------------|
+| [Fuzzy match](https://github.com/NicolasMICAUX/searchin/discussions/2)              | 5/5        | 2/5        | NOBODY            | _e.g._ : `batch_size` should match when searching `batchsize`.                                                                                 |
+| [Underline the match](https://github.com/NicolasMICAUX/searchin/discussions/4)      | 4/5        | 1/5        | NOBODY            | _e.g._ : the printed result should be formatted like this : _def cross_entropy( [...] reduction: str = "<u>mean</u>", [...], label_smoothing)_ |
+| [Write some tests](https://github.com/NicolasMICAUX/searchin/discussions/5)         | 4/5        | 2/5        | NOBODY            | Write some tests to ensure that the code is working properly.                                                                                  |
+| [Find a better algorithm](https://github.com/NicolasMICAUX/searchin/discussions/7)  | 3/5        | 4/5        | NOBODY            | The current algorithm is a BFS (Breadth First Search). Maybe there is a better algorithm to use.                                               |
+| [`Searchin...` animation](https://github.com/NicolasMICAUX/searchin/discussions/9)  | 3/5        | 1/5        | NOBODY            | Add a cool animation when searching takes a bit of time.                                                                                       |
+| [Profile code](https://github.com/NicolasMICAUX/searchin/discussions/11)             | 2/5        | 1/5        | NOBODY            | Profile the code to see if we can speed it up a little.                                                                                        |
+| [Add a CLI](https://github.com/NicolasMICAUX/searchin/discussions/12)                | 1/5        | 2/5        | NOBODY            | Think about the design of a CLI (Command Line Interface) to use Search'In from the terminal.                                                   |
 
 Non-Code contribution :
 
 | Task                     | Importance | Difficulty | Contributor on it | Description                                                                                                                                                           |
 |:-------------------------|------------|------------|-------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| Adding documentation     | 4/5        | 1/5        | NOBODY            | Add some helpful docstrings, write basic tutorials with real-life scenarios, write a wiki for other contributors to better understand the functioning of the library. |
+| [Adding documentation](https://github.com/NicolasMICAUX/searchin/discussions/6)     | 4/5        | 1/5        | NOBODY            | Add some helpful docstrings, write basic tutorials with real-life scenarios, write a wiki for other contributors to better understand the functioning of the library. |
 
 
 _For every todo, just click on the link to find the discussion where I describe how I would do it._  
