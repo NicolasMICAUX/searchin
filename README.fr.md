@@ -131,6 +131,14 @@ I want to add a lot of functionnalities to this project, but I don't have much t
 | `Searchin...` animation  | 3/5        | 1/5        | NOBODY            | Add a cool animation when searching takes a bit of time.                                                                                        |
 | Profile code             | 2/5        | 1/5        | NOBODY            | Profile the code to see if we can speed it up a little.                                                                                         |
 | Add a CLI                | 1/5        | 2/5        | NOBODY            | Think about the design of a CLI (Command Line Interface) to use Search'In from the terminal.                                                    |
+
+Non-Code contribution :
+
+| Task                     | Importance | Difficulty | Contributor on it | Description                                                                                                                                                           |
+|:-------------------------|------------|------------|-------------------|:----------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| Adding documentation     | 4/5        | 1/5        | NOBODY            | Add some helpful docstrings, write basic tutorials with real-life scenarios, write a wiki for other contributors to better understand the functioning of the library. |
+
+
 _For every todo, just click on the link to find the discussion where I describe how I would do it._  
 See the [open issues](https://github.com/NicolasMICAUX/searchin/issues) for a full list of proposed features (and known issues).
 
