@@ -135,7 +135,7 @@ Non-Code contribution :
 
 
 _For every todo, just click on the link to find the discussion where I describe how I would do it._  
-See the [open issues](https://github.com/NicolasMICAUX/searchin/issues) for a full list of proposed features (and known issues).
+See the [discussions](https://github.com/NicolasMICAUX/searchin/discussions) for a full list of proposed features (and known issues).
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
 
