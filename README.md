@@ -51,7 +51,7 @@ pip install searchin
 
 Import Search'In in your code, by adding this line :
 ```python
-from searchin import searchin
+import searchin
 ```
 
 To search for `"name"` in a `Human` class for example, just add this line :
