@@ -10,7 +10,6 @@ from inspect import getmembers, isbuiltin, getdoc, getcomments, getfile, getsour
 from typing import Union, List, Sized
 import numbers
 
-
 class Node:
     """A node in a path."""
 
@@ -19,10 +18,13 @@ class Node:
         self.obj = obj
         self.depth = depth
 
-    def __str__(self):
+    def __str__(self) -> str:
+        return self.name
+    
+    def __repr__(self) -> str:
         return self.name
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         return self.obj == other.obj
 
 
@@ -33,20 +35,23 @@ class Path:
         self.last_node = None
         self.names_path = None
 
-    def from_start_node(self, start_node: Node):
+    def from_start_node(self, start_node: Node) -> 'Path':
         """Create a path from a start node."""
         self.last_node = start_node
         self.names_path = str(start_node)
         return self
 
-    def add_node(self, node: Node):
+    def add_node(self, node: Node) -> 'Path':
         """Add a node to the path."""
         new = Path()
         new.last_node = node
         new.names_path = self.names_path + '.' + str(node)
         return new
 
-    def __str__(self):
+    def __str__(self) -> str:
+        return self.names_path
+    
+    def __repr__(self) -> str:
         return self.names_path
 
 
@@ -69,20 +74,20 @@ class SearchMatch:
     def __init__(self):
         self._repr = ''
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self._repr
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self._repr
 
-    def from_number(self, n: str):
+    def from_number(self, n: str) -> 'SearchMatch':
         """Represent a match of a number.
         :param n: The number converted to string.
         """
         self._repr = n
         return self
 
-    def from_str(self, s: str, idx: int, search_term: str):
+    def from_str(self, s: str, idx: int, search_term: str) -> 'SearchMatch':
         """Represent a match of a string.
         :param s: The string.
         :param idx: The index of the match.
@@ -96,9 +101,9 @@ class SearchMatch:
         self._repr = '{} {} {}'.format(begin, match, end)
         return self
 
-    def from_obj(self, str_obj, idx, search_term):
+    def from_obj(self, str_obj, idx, search_term) -> 'SearchMatch':
         """Represent a match of an object."""
-        self.from_str(str_obj, idx, search_term)
+        return self.from_str(str_obj, idx, search_term)
 
 
 class SearchResult:
@@ -152,9 +157,11 @@ def _search_object(obj, query, max_depth, top_k_results, max_iterable_length) ->
         path = queue.pop(0)
         item = path.last_node.obj
         depth = path.last_node.depth
-        sr = is_in(item, query)
-        if sr is not False:
-            yield SearchResult(query, path, sr)
+        sm = is_in(item, query)  # search match
+        if sm is None:
+            is_in(item, query)
+        if sm is not False:
+            yield SearchResult(query, path, sm)
             k += 1
             if k == top_k_results:
                 return
