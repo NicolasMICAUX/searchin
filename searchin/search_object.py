@@ -7,6 +7,7 @@ except ImportError:
     from collections import Iterable  # Python 2
 
 from inspect import getmembers, isbuiltin, getdoc, getcomments, getfile, getsource, signature
+import types
 from typing import Union, List, Sized
 import numbers
 
@@ -153,12 +154,20 @@ def is_in_list(obj, list_) -> bool:
             return True
     return False
 
+def get_root_repr(obj) -> str:
+    # if obj.__name__ exists:
+    if hasattr(obj, '__name__'):
+        return obj.__name__
+    else:
+        return 'root'
+    
+
 def _search_object(obj, query, max_depth, top_k_results, max_iterable_length) -> Union[List[SearchResult], None]:
     """
     Search an object for a given search term.
     """
     list_of_seen_objects = []
-    queue = [Path().from_start_node(Node('root', obj, 0))]  # type: List[Path]
+    queue = [Path().from_start_node(Node(get_root_repr(obj), obj, 0))]  # type: List[Path]
     k = 0
     while queue:
         path = queue.pop(0)
@@ -176,23 +185,23 @@ def _search_object(obj, query, max_depth, top_k_results, max_iterable_length) ->
             if not isbuiltin(item):
                 doc = getdoc(item)
                 if doc is not None:
-                    queue.append(path.add_node(Node('', doc, depth + 1)))
+                    queue.append(path.add_node(Node('@doc', doc, depth + 1)))
                 comments = getcomments(item)
                 if comments is not None:
-                    queue.append(path.add_node(Node('', comments, depth + 1)))
+                    queue.append(path.add_node(Node('@comments', comments, depth + 1)))
                 try:
                     file = getfile(item)
-                    queue.append(path.add_node(Node('', file, depth + 1)))
+                    queue.append(path.add_node(Node('@file', file, depth + 1)))
                 except TypeError:
                     pass
                 try:
                     source = getsource(item)
-                    queue.append(path.add_node(Node('', source, depth + 1)))
+                    queue.append(path.add_node(Node('@source', source, depth + 1)))
                 except (OSError, TypeError):
                     pass
                 try:
                     sig = signature(item)
-                    queue.append(path.add_node(Node('', sig, depth + 1)))
+                    queue.append(path.add_node(Node('@signature', sig, depth + 1)))
                 except (ValueError, TypeError):
                     pass
                 if is_iterable(item):
@@ -201,7 +210,10 @@ def _search_object(obj, query, max_depth, top_k_results, max_iterable_length) ->
                 else:
                     new_nodes = [Node(name, member, depth + 1)
                                  for name, member in getmembers(item)
-                                 if not isbuiltin(member) and not is_in_list(member, list_of_seen_objects)]
+                                 if not isbuiltin(member)
+                                 and not is_in_list(member, list_of_seen_objects)
+                                 and not isinstance(member, types.CodeType)
+                                 ]
                     queue.extend([path.add_node(node) for node in new_nodes])
                     list_of_seen_objects.extend([node.obj for node in new_nodes])
 
