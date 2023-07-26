@@ -210,5 +210,9 @@ def searchin(obj, query: str, max_depth: int = 3, top_k_results: int = 10,
     if get_raw_result:
         return _search_object(obj, query, max_depth, top_k_results, max_iterable_length)
     else:  # Print the results
+        any_result = False
         for result in _search_object(obj, query, max_depth, top_k_results, max_iterable_length):
             print(result)
+            any_result = True
+        if not any_result:
+            print('No result found for "{}". You can try increasing `max_depth` or `max_iterable_length`.'.format(query))
