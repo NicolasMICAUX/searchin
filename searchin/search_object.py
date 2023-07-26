@@ -7,9 +7,9 @@ except ImportError:
     from collections import Iterable  # Python 2
 
 from inspect import getmembers, isbuiltin, getdoc, getcomments, getfile, getsource, signature
+import types
 from typing import Union, List, Sized
 import numbers
-
 
 class Node:
     """A node in a path."""
@@ -19,10 +19,13 @@ class Node:
         self.obj = obj
         self.depth = depth
 
-    def __str__(self):
+    def __str__(self) -> str:
+        return self.name
+    
+    def __repr__(self) -> str:
         return self.name
 
-    def __eq__(self, other):
+    def __eq__(self, other) -> bool:
         return self.obj == other.obj
 
 
@@ -33,20 +36,23 @@ class Path:
         self.last_node = None
         self.names_path = None
 
-    def from_start_node(self, start_node: Node):
+    def from_start_node(self, start_node: Node) -> 'Path':
         """Create a path from a start node."""
         self.last_node = start_node
         self.names_path = str(start_node)
         return self
 
-    def add_node(self, node: Node):
+    def add_node(self, node: Node) -> 'Path':
         """Add a node to the path."""
         new = Path()
         new.last_node = node
         new.names_path = self.names_path + '.' + str(node)
         return new
 
-    def __str__(self):
+    def __str__(self) -> str:
+        return self.names_path
+    
+    def __repr__(self) -> str:
         return self.names_path
 
 
@@ -69,20 +75,20 @@ class SearchMatch:
     def __init__(self):
         self._repr = ''
 
-    def __str__(self):
+    def __str__(self) -> str:
         return self._repr
 
-    def __repr__(self):
+    def __repr__(self) -> str:
         return self._repr
 
-    def from_number(self, n: str):
+    def from_number(self, n: str) -> 'SearchMatch':
         """Represent a match of a number.
         :param n: The number converted to string.
         """
         self._repr = n
         return self
 
-    def from_str(self, s: str, idx: int, search_term: str):
+    def from_str(self, s: str, idx: int, search_term: str) -> 'SearchMatch':
         """Represent a match of a string.
         :param s: The string.
         :param idx: The index of the match.
@@ -96,9 +102,9 @@ class SearchMatch:
         self._repr = '{} {} {}'.format(begin, match, end)
         return self
 
-    def from_obj(self, str_obj, idx, search_term):
+    def from_obj(self, str_obj, idx, search_term) -> 'SearchMatch':
         """Represent a match of an object."""
-        self.from_str(str_obj, idx, search_term)
+        return self.from_str(str_obj, idx, search_term)
 
 
 class SearchResult:
@@ -141,20 +147,37 @@ def is_sized_iterable(item: Iterable) -> bool:
     """Check if an iterable is sized."""
     return hasattr(item, '__len__') or isinstance(item, Sized)
 
+def is_in_list(obj, list_) -> bool:
+    """This checks if an object is in list with `is`, not ==."""
+    for item in list_:
+        if obj is item:
+            return True
+    return False
+
+def get_root_repr(obj) -> str:
+    # if obj.__name__ exists:
+    if hasattr(obj, '__name__'):
+        return obj.__name__
+    else:
+        return 'root'
+    
 
 def _search_object(obj, query, max_depth, top_k_results, max_iterable_length) -> Union[List[SearchResult], None]:
     """
     Search an object for a given search term.
     """
-    queue = [Path().from_start_node(Node('root', obj, 0))]  # type: List[Path]
+    list_of_seen_objects = [obj]
+    queue = [Path().from_start_node(Node(get_root_repr(obj), obj, 0))]  # type: List[Path]
     k = 0
     while queue:
         path = queue.pop(0)
         item = path.last_node.obj
         depth = path.last_node.depth
-        sr = is_in(item, query)
-        if sr is not False:
-            yield SearchResult(query, path, sr)
+        sm = is_in(item, query)  # search match
+        if sm is None:
+            is_in(item, query)
+        if sm is not False:
+            yield SearchResult(query, path, sm)
             k += 1
             if k == top_k_results:
                 return
@@ -162,33 +185,37 @@ def _search_object(obj, query, max_depth, top_k_results, max_iterable_length) ->
             if not isbuiltin(item):
                 doc = getdoc(item)
                 if doc is not None:
-                    queue.append(path.add_node(Node('', doc, depth + 1)))
+                    queue.append(path.add_node(Node('@doc', doc, depth + 1)))
                 comments = getcomments(item)
                 if comments is not None:
-                    queue.append(path.add_node(Node('', comments, depth + 1)))
+                    queue.append(path.add_node(Node('@comments', comments, depth + 1)))
                 try:
                     file = getfile(item)
-                    queue.append(path.add_node(Node('', file, depth + 1)))
+                    queue.append(path.add_node(Node('@file', file, depth + 1)))
                 except TypeError:
                     pass
                 try:
                     source = getsource(item)
-                    queue.append(path.add_node(Node('', source, depth + 1)))
+                    queue.append(path.add_node(Node('@source', source, depth + 1)))
                 except (OSError, TypeError):
                     pass
                 try:
                     sig = signature(item)
-                    queue.append(path.add_node(Node('', sig, depth + 1)))
+                    queue.append(path.add_node(Node('@signature', sig, depth + 1)))
                 except (ValueError, TypeError):
                     pass
                 if is_iterable(item):
                     if is_sized_iterable(item) and len(item) < max_iterable_length:
                         queue.extend([path.add_node(Node(str(i), x, depth + 1)) for i, x in enumerate(item)])
                 else:
-                    queue.extend([path.add_node(Node(name, member, depth + 1))
-                                  for name, member in getmembers(item)
-                                  if not isbuiltin(member)
-                                  ])
+                    new_nodes = [Node(name, member, depth + 1)
+                                 for name, member in getmembers(item)
+                                 if not isbuiltin(member)
+                                 and not is_in_list(member, list_of_seen_objects)
+                                 and not isinstance(member, types.CodeType)
+                                 ]
+                    queue.extend([path.add_node(node) for node in new_nodes])
+                    list_of_seen_objects.extend([node.obj for node in new_nodes])
 
 
 def searchin(obj, query: str, max_depth: int = 3, top_k_results: int = 10,
@@ -210,5 +237,9 @@ def searchin(obj, query: str, max_depth: int = 3, top_k_results: int = 10,
     if get_raw_result:
         return _search_object(obj, query, max_depth, top_k_results, max_iterable_length)
     else:  # Print the results
+        any_result = False
         for result in _search_object(obj, query, max_depth, top_k_results, max_iterable_length):
             print(result)
+            any_result = True
+        if not any_result:
+            print('No result found for "{}". You can try increasing `max_depth` or `max_iterable_length`.'.format(query))
