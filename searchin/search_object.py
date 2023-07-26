@@ -146,11 +146,18 @@ def is_sized_iterable(item: Iterable) -> bool:
     """Check if an iterable is sized."""
     return hasattr(item, '__len__') or isinstance(item, Sized)
 
+def is_in_list(obj, list_) -> bool:
+    """This checks if an object is in list with `is`, not ==."""
+    for item in list_:
+        if obj is item:
+            return True
+    return False
 
 def _search_object(obj, query, max_depth, top_k_results, max_iterable_length) -> Union[List[SearchResult], None]:
     """
     Search an object for a given search term.
     """
+    list_of_seen_objects = []
     queue = [Path().from_start_node(Node('root', obj, 0))]  # type: List[Path]
     k = 0
     while queue:
@@ -192,10 +199,11 @@ def _search_object(obj, query, max_depth, top_k_results, max_iterable_length) ->
                     if is_sized_iterable(item) and len(item) < max_iterable_length:
                         queue.extend([path.add_node(Node(str(i), x, depth + 1)) for i, x in enumerate(item)])
                 else:
-                    queue.extend([path.add_node(Node(name, member, depth + 1))
-                                  for name, member in getmembers(item)
-                                  if not isbuiltin(member)
-                                  ])
+                    new_nodes = [Node(name, member, depth + 1)
+                                 for name, member in getmembers(item)
+                                 if not isbuiltin(member) and not is_in_list(member, list_of_seen_objects)]
+                    queue.extend([path.add_node(node) for node in new_nodes])
+                    list_of_seen_objects.extend([node.obj for node in new_nodes])
 
 
 def searchin(obj, query: str, max_depth: int = 3, top_k_results: int = 10,
