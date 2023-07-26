@@ -166,7 +166,7 @@ def _search_object(obj, query, max_depth, top_k_results, max_iterable_length) ->
     """
     Search an object for a given search term.
     """
-    list_of_seen_objects = []
+    list_of_seen_objects = [obj]
     queue = [Path().from_start_node(Node(get_root_repr(obj), obj, 0))]  # type: List[Path]
     k = 0
     while queue:
