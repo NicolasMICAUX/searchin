@@ -154,8 +154,8 @@ Don't forget to give the project a star! Thanks again!
 
 
 ## Authors
-This library was created by [Nicolas MICAUX](https://github.com/NicolasMICAUX).
-
+This library was created by [Nicolas MICAUX](https://github.com/NicolasMICAUX).  
+You might also be interested by [work from RobustPy](https://github.com/RobustPy/)
 
 <!-- MARKDOWN LINKS & IMAGES -->
 <!-- https://www.markdownguide.org/basic-syntax/#reference-style-links -->
